@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
 import close from "../assets/close.svg"
 import menu from "../assets/menu.svg"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
 
   const [toggle, setToggle] = useState();
+
+  const navigate = useNavigate();
+
+  const handleLogout = async() => {
+    localStorage.removeItem("id");
+    navigate("/");
+  }
 
   return (
     <div className='py-4 px-20 bg-black text-white'>
@@ -14,7 +21,8 @@ const Navbar = () => {
           abstractify.
         </Link>
         <div>
-          <ul className='flex gap-20 text-lg'>
+          <ul className='flex gap-20 text-lg items-center'>
+            <li onClick={handleLogout} className='cursor-pointer'>Logout</li>
             <Link to="/explore"><li className='py-1 px-2'>Explore</li></Link>
             <Link to="/seed"><li className='bg-purple-500 py-1 px-3 rounded-e-2xl rounded-s-md'>Seed</li></Link>
           </ul>
