@@ -20,10 +20,10 @@ const Home = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`http://localhost:4000/graphql`, {
+            const response = await fetch(`https://abstractify-main-tabishnaqvi1311.grafbase.app/graphql`, {
                 method: "POST",
                 headers: {
-                    "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTIwMjA2NjksImlzcyI6ImdyYWZiYXNlIiwiYXVkIjoiMDFIN1Q0TVlIM0VNWEJIVEZLSlkwUzNETVEiLCJqdGkiOiIwMUg3VDRNWU5TSjg0OEpDMDRQNldBWDQ5SyIsImVudiI6InByb2R1Y3Rpb24iLCJwdXJwb3NlIjoicHJvamVjdC1hcGkta2V5In0.YpyyJvVhP--UPlJawdEa-iVsTAcOwwk1qpvj1LN_phY"
+                    "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTIyMTMwNjIsImlzcyI6ImdyYWZiYXNlIiwiYXVkIjoiMDFIN1pXNEEyRVc5QkJGTjREUTBWNjJGUjMiLCJqdGkiOiIwMUg3Wlc0QVY3WlRSSjg2MkVDTktYTURSTiIsImVudiI6InByb2R1Y3Rpb24iLCJwdXJwb3NlIjoicHJvamVjdC1hcGkta2V5In0.iBt-9V-U9luoCso67eZJqOIjNv7PeMcN-VfRS5IfmIE"
                 },
                 body: JSON.stringify({
                     query: CreateUserQuery,
