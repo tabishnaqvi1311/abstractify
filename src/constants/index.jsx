@@ -32,15 +32,15 @@ export const tagChoice = [
 export const cooldown = [
     {
         id: 1,
-        title: "6 Hours"
+        title: 6
     },
     {
         id: 2,
-        title: "12 Hours"
+        title: 12
     },
     {
         id: 3,
-        title: "24 Hours"
+        title: 24
     }
 ]
 export const contVal = [
