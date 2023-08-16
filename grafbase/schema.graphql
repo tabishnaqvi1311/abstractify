@@ -19,7 +19,9 @@ type Story @model{
     stage: StoryStage @default(value: SEED)
     contributions: [Contribution!]
     likes: Int @default(value: 0)
+    cooldown: Int @default(value: 6)
     tags: String
+
     comments: [Comment]
 }
 
