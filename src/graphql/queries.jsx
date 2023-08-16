@@ -55,6 +55,9 @@ export const getExploreStories = /* GraphQL */`
                         slug
                         likes
                         tags
+                        creator {
+                            username
+                        }
                     }
                 }
             }

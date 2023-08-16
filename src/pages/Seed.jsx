@@ -1,16 +1,85 @@
 import React, { useState } from 'react'
 import { contVal, cooldown, tagChoice } from '../constants';
+import {useNavigate} from 'react-router'
 
 
 const Seed = () => {
 
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [tags, setTags] = useState();
-    const [contributerCooldown, setContributerCooldown] = useState();
-    const [contributionVal, setContributionVal] = useState();
+    const [tags, setTags] = useState("");
+    const [contributerCooldown, setContributerCooldown] = useState(6);
+    const [contributionVal, setContributionVal] = useState("");
 
-    
+    const navigate = useNavigate()
+
+
+    const StoryCreateQuery = /* GraphQL */ `
+        mutation CreateStory($creatorId: ID!, $slug: String!, $title: String!, $content: String ,$tags: String, $cooldown: Int) {
+        storyCreate(input: {
+            creator: {
+                link: $creatorId
+            }
+            slug: $slug
+            title: $title
+            content: $content
+            tags: $tags
+            cooldown: $cooldown
+        }) {
+            story {
+                creator {
+                    username
+                }
+            id
+            createdAt
+            }
+        }
+    }
+    `
+
+    const generateSlug = (storyTitle) => {
+        return storyTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/--+/g, '-').trim();
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const user_id = localStorage.getItem("id");
+        const slug = generateSlug(title)
+
+        try {
+            const response = await fetch(`http://localhost:4000/graphql`, {
+                method: "POST",
+                headers: {
+                    "x-api-key": ""
+                },
+                body: JSON.stringify({
+                    query: StoryCreateQuery,
+                    variables: {
+                        creatorId: user_id,
+                        slug: slug,
+                        title: title,
+                        content: content,
+                        tags: tags,
+                        cooldown: parseInt(contributerCooldown)
+                    }
+                })
+            })
+
+            const json = await response.json();
+            if(json.errors){
+                console.log(json.errors)
+                return
+            }
+            const story_id = json.data.storyCreate.story.id
+            console.log(json);
+            navigate(`/story/${slug}-${story_id}`)
+        } catch (error) {
+            console.log(error.message)
+        }
+
+
+    }
 
 
     return (
@@ -21,7 +90,7 @@ const Seed = () => {
                 <span className='font-bold lg:text-3xl text-xl text-blue-500'>And Watch As It Grows! 👀</span>
             </div>
             <div className=''>
-                <form className='flex flex-col gap-5 m-10'>
+                <form className='flex flex-col gap-5 m-10' onSubmit={handleSubmit}>
                     <label htmlFor='title' className='text-xl font-bold'>Title*</label>
                     <input type='text' placeholder='an interesting title...' name='title' className='bg-black p-4 text-white font-bold rounded-xl focus:outline-none' value={title} onChange={e => setTitle(e.target.value)} />
                     <label htmlFor='content' className='text-xl font-bold'>Content</label>
@@ -36,7 +105,7 @@ const Seed = () => {
                             </select>
                         </div>
                         <div className='flex flex-col'>
-                            <label htmlFor='cooldown' className='text-xl font-bold'>Contributer Cooldown*</label>
+                            <label htmlFor='cooldown' className='text-xl font-bold'>Contributer Cooldown* (in hours)</label>
                             <select name='cooldown' value={contributerCooldown} onChange={e => setContributerCooldown(e.target.value)} className='bg-black text-white rounded-xl p-3 font-bold'>
                                 {cooldown.map((option) => (
                                     <option key={option.id}>{option.title}</option>
