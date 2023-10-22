@@ -3,7 +3,7 @@ import NavbarMobile from "./NavbarMobile"
 
 const NavbarWrapper = () => {
   return (
-    <div>
+    <div className="">
         <NavbarLarge/>
         <NavbarMobile/>
     </div>
